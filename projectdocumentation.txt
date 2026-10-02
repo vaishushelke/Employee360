@@ -1,0 +1,133 @@
+
+## Project Name is = Employee360;
+
+
+
+🗓️ Employee360 — 30-Day Development Plan
+Week 1 — Foundation + Database
+Day	What you build	What you learn
+Day 1	Project planning + software setup	Full-stack architecture
+Day 2	Create MySQL database	Database basics
+Day 3	Design tables + relationships	Primary/foreign keys
+Day 4	Create Spring Boot project	Spring Boot structure
+Day 5	Create Entity classes	JPA/Hibernate
+Day 6	Create Repository layer	Spring Data JPA
+Day 7	First database connection + testing	Backend → MySQL
+🎯 End of Week 1
+
+You should be able to explain:
+
+"Employee360 follows a three-tier architecture. React is the presentation layer, Spring Boot handles business logic and REST APIs, and MySQL stores the application data."
+
+Week 2 — Backend Development
+Day	What you build	What you learn
+Day 8	Employee CRUD API	REST API
+Day 9	Employee Service layer	Business logic
+Day 10	Employee Controller	HTTP methods
+Day 11	Department API	Relationships
+Day 12	Leave API	CRUD + validation
+Day 13	Attendance API	Date/time handling
+Day 14	Postman testing	API testing
+
+You'll understand:
+
+Controller
+     ↓
+Service
+     ↓
+Repository
+     ↓
+Database
+
+This is very important for your interview.
+
+Week 3 — React Frontend
+Day	What you build	What you learn
+Day 15	Create React project	React structure
+Day 16	Navbar + Sidebar	Components
+Day 17	Login page UI	Forms
+Day 18	Employee dashboard	React state
+Day 19	Employee list	API integration
+Day 20	Add/Edit Employee	CRUD frontend
+Day 21	Employee details	React Router
+
+At this point:
+
+React
+  ↓ Axios
+Spring Boot
+  ↓
+MySQL
+
+will actually work.
+
+Week 4 — Important HR Features
+Day	What you build	What you learn
+Day 22	Attendance UI	Full-stack integration
+Day 23	Leave application	Request/response
+Day 24	Leave approval	Role-based workflow
+Day 25	Payroll module	Business calculations
+Day 26	PF module	Database relationships
+Day 27	Admin dashboard	Statistics
+Day 28	Employee dashboard	Personalized data
+Day 29	Validation + exception handling	Production practices
+Day 30	Testing + documentation + GitHub	Deployment/interview preparation
+
+
+              EMPLOYEE360
+                   |
+        ┌──────────┴──────────┐
+        ↓                     ↓
+   React.js              Spring Boot
+   Frontend                Backend
+        |                     |
+        |       REST API      |
+        └─────────┬───────────┘
+                  ↓
+              JPA/Hibernate
+                  ↓
+                MySQL
+                  ↓
+               XAMPP
+
+
+4. Understand the Three Users
+
+Our system will initially have three roles.
+
+👨‍💼 Admin/HR
+
+Admin can:
+
+Add employees
+Edit employees
+Remove/deactivate employees
+Manage departments
+View attendance
+Manage leaves
+Manage payroll
+Manage PF
+View reports
+
+
+👨‍💻 Employee
+
+Employee can:
+
+View profile
+View attendance
+Mark attendance
+Apply for leave
+View leave status
+View salary
+View PF details
+
+
+👨‍💼 Manager
+
+Manager can:
+
+View team
+View team attendance
+Review leave requests
+Approve/reject team leave

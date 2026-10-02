@@ -1,0 +1,432 @@
+
+Inheritance can be defined as the process where one class acquires the properties (methods and fields) of another. With the use of inheritance, the information is made manageable in a hierarchical order. The class which inherits the properties of another is known as the subclass (derived class, child class) and the class whose properties are inherited is known as the superclass (base class, parent class).
+
+Different kinds of objects often have a certain amount in common with each other. Mountain bikes, road bikes, and tandem bikes, for example, all share the characteristics of bicycles (current speed, current pedal cadence, current gear). Yet each also defines additional features that make them different: tandem bicycles have two seats and two sets of handlebars; road bikes have drop handlebars; some mountain bikes have an additional chain ring, giving them a lower gear ratio.
+
+Object-oriented programming allows classes to inherit commonly used state and behavior from other classes. In this example, Bicycle now becomes the superclass of MountainBike, RoadBike, and TandemBike. In the Java programming language, each class can have one direct superclass, and each superclass has the potential for an unlimited number of subclasses.
+
+
+
+Encapsulation in Java is a mechanism of wrapping the data (variables) and code acting on the data (methods) together as a single unit. In encapsulation, the variables of a class will be hidden from other classes and can be accessed only through the methods of their current class. Therefore, it is also known as data hiding.
+
+To achieve encapsulation in Java.
+
+Declare the variables of a class as private.
+Provide public setter and getter methods to modify and view the variables values.
+
+
+Association establishes a relationship between two separate classes through their objects. The relationship can be one-to-one, one-to-many, many-to-one, and many-to-many. It refers to how objects are related to each other and how they are using each other's functionality. Composition and aggregation are two types of association.
+
+Composition
+Composition is a strong type of association. An association is said to be composition if an object owns another object and the other object cannot exist without the owner object. Consider the case of a human having a heart. Here, the human object contains the heart, and the heart cannot exist without the human.
+
+Aggregation
+Aggregation is a weak association. An association is said to be aggregation if both objects can exist independently. For example, a team object and a player object. The team contains multiple players, but a player can exist without a team.
+
+
+Abstraction is a process of hiding the implementation details from the user; only the functionality will be provided to the user. In other words, the user will have information on what the object does instead of how it does it.
+
+Polymorphism is the ability of an object to take on many forms. The most common use of polymorphism in OOP occurs when a parent class reference is used to refer to a child class object. Any Java object that can pass more than one IS-A test is polymorphic. In Java, all Java objects are polymorphic since any object will pass the IS-A test for their own type and for the class Object. It is important to know that the only possible way to access an object is through a reference variable. A reference variable can be of only one type. Once declared, the type of a reference variable cannot be changed.
+
+
+Variables are containers that store values while the Java program is being executed. There are 3 types of variables.
+1. Local variable – A variable declared within a method is called a local variable.
+2. Instance variable – A variable declared within a class but outside a method is called an instance variable.
+3. Static variable – A static variable is a class-level variable. A single copy of a static variable is created and shared among all the instances of the class. Memory allocation happens once when the class is loaded into memory.
+
+Scanner class is used to get user input. It is found in the java.util package.
+
+Method	Description
+nextLine()	Reads String value from user.
+nextFloat()	Reads value from user.
+nextBoolean()	Reads boolean value from user.
+nextByte()	Reads byte value from user.
+nextDouble()	Reads double value from user.
+nextInt()	Reads integer value from user.
+nextLong()	Reads long value from user.
+nextShort()	Reads short value from user.
+
+Looping
+A repetition construct causes a group of one or more program statements to be invoked repeatedly until some end condition is met. Typically, such constructs are used to step through arrays or linked lists.
+
+Loop	Statement	Syntax
+While loop	Fixed count loops, that repeats a predefined number of times.	while (condition) { // code block to be executed }
+For loop	Variable count loops, that repeats an unspecified number of times.	for (statement 1; statement 2; statement 3) { // code block to be executed }
+Do-while loop	Executes at least once and works as while loop.	do { // code block to be executed } while (condition);
+
+
+Arrays in Java are homogeneous data structures implemented in Java as objects. Arrays store one or more values of a specific data type and provide indexed access to store the same.
+
+Arrays must also be declared before use
+• Have fixed size
+May be specified by a literal, by an expression, or implicitly
+• May be optionally initialized
+• Have default values depending on their type
+• Are always zero-based (array[0] is the first element)
+
+
+Types of Arrays are
+
+Single Dimension Array : is declared to store multiple values in a single variable using single bracket.
+Multidimensional Array : Multidimensional array is declared by using two or more sets of brackets.
+Initialization of single dimension array
+int[] age = {12, 4, 5, 2, 5};
+
+Initialization of multidimensional array
+Double[][] matrix = { { 1.2, 4.3 }, { 4.1, -1.1 } };
+
+
+Method Overloading
+If a class has multiple methods with the same name but different parameters, it is known as Method Overloading. If we need to perform only one operation, having methods with the same name increases the readability of the program. Suppose you have to perform the addition of given numbers but there can be any number of arguments; if you write the method as a(int,int) for two parameters, and b(int,int,int) for three parameters, then it may be difficult for you as well as other programmers to understand the behavior of the method because its names differ. So, we perform method overloading to understand the program quickly.
+
+Advantage of method overloading
+
+
+Instance Initialization Block
+In a Java program, operations can be performed on methods, constructors, and initialization blocks. Instance Initialization Blocks or IIB are used to initialize instance variables. IIBs are executed before constructors. They run each time an object of the class is created.
+
+Initialization blocks are executed whenever the class is initialized and before constructors are invoked.
+They are typically placed above the constructors within braces.
+It is not at all necessary to include them in your classes.
+Garbage Collection
+Java garbage collection is the process by which Java programs perform automatic memory management. Java programs compile to bytecode that can be run on a Java Virtual Machine, or JVM for short. When Java programs run on the JVM, objects are created on the heap, which is a portion of memory dedicated to the program. Eventually, some objects will no longer be needed. The garbage collector finds these unused objects and deletes them to free up memory.
+
+Garbage Collectable Objects
+The garbage collector sweeps through the JVM’s list of objects periodically and reclaims the resources held by unreferenced objects.
+
+All objects that have no object references are eligible for garbage collection
+o References out of scope, objects to which you have assigned null, and so forth
+The JVM decides when the garbage collector is run
+o Typically, the garbage collector is run when memory is low
+o May not be run at all
+o Unpredictable timing
+
+
+Packages
+
+Classes can be grouped:
+o Logically, according to the model you are building
+o As sets designed to be used together
+o For convenience
+By convention, package names are in lower case
+Different packages can contain classes with the same name
+I have created a class AddTwo inside a package named AddNumbers. To create a class inside a package, declare the package name in the first statement in your program. A class can have only one package declaration.
+
+Access Levels
+
+Modifier	Class	Package	Subclass	World
+Public	Y	Y	Y	Y
+Protected	Y	Y	Y	N
+No modifier	Y	Y	N	N
+Private	Y	N	N	N
+
+
+
+Method overriding is used to provide the specific implementation of a method that has already been provided by its superclass. Method overriding is used for runtime polymorphism.
+The overriding method must have
+
+the same name as in the parent class
+the same parameter as in the parent class.
+IS-A relationship (inheritance).
+Restrictions on the overriding method:
+
+The parameter list must match the inherited method exactly.
+The return type must be the same as that of the inherited method.
+The access modifier must not be more restrictive than that of, for example, if overriding a protected method, the new method can be protected or public, but not private.
+
+
+String Vs StringBuffer
+StringBuffer is a peer class of String that provides much of the functionality of strings. String represents fixed-length, immutable character sequences while StringBuffer represents growable and writable character sequences.
+
+he abstract keyword is used to create an abstract class and method.
+
+Abstract classes cannot be instantiated; they are intended to be a superclass for other classes.
+Abstract methods have no implementation.
+If a class has one or more abstract methods, it is abstract and must be declared as such.
+Concrete classes have full implementations and can be instantiated.
+
+Interfaces
+Many classes of vehicle provide the same services as the car class: trucks, boats, planes, and so on. These vehicles accept the same set of messages that allow them to be driven, and thus have the same interface to their services, 
+
+Abstract classes vs Interfaces
+The difference between abstract classes and interfaces with respect to its members are:
+
+Members	Abstract classes	Interfaces
+Methods	can have abstract and non-abstract methods including default and static methods.	can have only abstract methods.
+Final Variables	may contain non-final variables.	variables declared in a Java interface are by default final.
+Type of variables	can have final, non-final, static and non-static variables.	has only static and final variables.
+Implementation	can provide the implementation of interface.	can’t provide the implementation of abstract class.
+Inheritance vs Abstraction	can be extended using keyword “extends”.	can be implemented using keyword “implements”.
+Multiple implementation	can extend another Java class and implement multiple Java interfaces.	can extend another Java interface only.
+Accessibility of Data Members	can have class members like private, protected, etc.	Members of a Java interface are public by default.
+
+
+
+The class String includes methods for examining individual characters of the sequence, for comparing strings, for searching strings, for extracting substrings, and for creating a copy of a string with all characters translated to uppercase or to lowercase. The Java language provides special support for the string concatenation operator ( + ), and for conversion of other objects to strings.
+
+String concatenation is implemented through the StringBuilder(or StringBuffer) class and its append method. String conversions are implemented through the method toString, defined by Object and inherited by all classes in Java.
+
+
+Wrapper classes are used for converting primitive data types into objects, like int to Integer etc.
+
+Primitives have no associated methods; there is no behavior associated with
+• primitive data types
+• Each primitive data type has a corresponding class, called a wrapper
+• Each wrapper object simply stores a single primitive variable and offers methods with which to process it
+Wrapper classes are included as part of the base Java API
+Primitive Type	Wrapper Class
+boolean	Boolean
+byte	Byte
+char	Char
+double	Double
+float	Float
+int	Int
+long	Long
+short	Short
+
+
+
+Checked Exceptions	A checked exception is an exception that is checked (notified) by the compiler at compilation time; these are also called compile-time exceptions.
+Unchecked Exceptions	An unchecked exception is an exception that occurs at the time of execution. These are also called Runtime Exceptions.
+
+
+A try/catch block is placed around the code that might generate an exception. Code within a try/catch block is referred to as protected code, and the syntax for using try/catch looks like the following –
+
+try {
+    // Protected code
+} catch (ExceptionName e1) {
+    // Catch block
+}
+
+When an exception occurs, that exception is handled by the catch block associated with it. Every try block should be immediately followed either by a catch block or finally block.
+
+Finally block
+The finally block is used when there are:
+
+Optional clauses that allow cleanup and other operations to occur whether an exception occurs or not
+May have try/finally without catch clauses
+Executed after any of the following:
+o try block completes normally
+o catch clause executes
+o Even if catch clause includes return.
+An unhandled exception is thrown, but before execution returns to the calling method
+Nested exception handling
+Following are the cases where nested exceptions can be handled.
+
+It may be necessary to handle exceptions inside a catch or finally clause.
+o For example, you may want to log errors to a file, but all I/O operations require IOException to be caught
+Do this by nesting a try/catch (and optional finally) sequence inside your handler.
+
+
+Java exception classes are organized into a hierarchy. There is a basic exception class called Exception as you might expect. But in fact, the base of the hierarchy starts not with Exception but with a class called Throwable, which is then subclasses into Exception and Error. The diagram depicts the exception hierarchy.
+
+
+
+Exception Propagation
+Propagation is a process in which the exception is transferred from the top to the bottom of the stack. If it is not caught once, the exception continues to go down to the previous method and so on until it is caught or until it reaches the very bottom of the call stack. This is called exception propagation, and it occurs in the case of Unchecked Exceptions.
+
+The Throw Keyword
+The features of the throw keyword are:
+
+Can be used in a try block when you want to deliberately throw an exception
+You can throw a predefined Throwable object or your own Exception subtype
+o Create a new instance of the exception class to encapsulate the condition
+The flow of the execution stops immediately after the throw statement, and the next statement is not reached
+A finally clause is still executed if present.
+
+Throwing Exceptions
+An object of Throwable or its subclasses can be explicitly created and thrown using the throw keyword.
+Syntax
+throw InstanceOfThrowableType;
+
+where InstanceOfThrowableType must be an object of type Throwable or subclass of Throwable. Such explicitly thrown exceptions must be handled somewhere in the program; otherwise, the program will terminate.
+
+Rethrowing Exceptions
+We all know that exceptions that occur in the try block are caught in the catch block. Thus, caught exceptions can be re-thrown using the throw keyword. Re-thrown exceptions must be handled somewhere in the program; otherwise, the program will terminate abruptly.
+
+Try with Resource Statement
+The try-with-resources statement is a try statement that declares one or more resources. A resource is an object that must be closed after the program is finished with it. The try-with-resources statement ensures that each resource is closed at the end of the statement. Any object that implements java.lang.AutoCloseable, which includes all objects that implement java.io.Closeable, can be used as a resource.
+
+Change Language
+An I/O Stream represents an input source or an output destination. A stream can represent many kinds of sources and destinations, including disk files, devices, other programs, and memory arrays. Streams support many kinds of data, including simple bytes, primitive data types, localized characters, and objects. Some streams simply pass on data; others manipulate and transform the data in useful ways. No matter how they work internally, all streams present the same simple model to programs that use them: A stream is a sequence of data. A program uses an input stream to read data from a source, one item at a time. A program uses an output stream to write data to a destination, one item at a time.
+
+In Java, 3 streams are created for us automatically. All these streams are attached to the console.
+
+System.out: standard output stream
+System.in: standard input stream
+System.err: standard error stream
+Byte Streams
+Java byte streams are used to perform input and output of 8-bit bytes. Though there are many classes related to byte streams, the most frequently used classes are FileInputStream and FileOutputStream.
+
+Following is an example that makes use of these two classes to copy an input file into an output file.
+
+
+The definition of metadata is "data about other data." With a file system, the data is contained in its files and directories, and the metadata tracks information about each of these objects: Is it a regular file, a directory, or a link? What is its size, creation date, last modified date, file owner, group owner, and access permissions? A file system's metadata is typically referred to as its file attributes. The Files class includes methods that can be used to obtain a single attribute of a file, or to set an attribute.
+
+Methods	Comment
+size(Path)	Returns the size of the specified file in bytes.
+isDirectory(Path, LinkOption)	Returns true if the specified Path locates a file that is a directory.
+isRegularFile(Path, LinkOption...)	Returns true if the specified Path locates a file that is a regular file.
+isSymbolicLink(Path)	Returns true if the specified Path locates a file that is a symbolic link.
+isHidden(Path)	Returns true if the specified Path locates a file that is considered hidden by the file system.
+getLastModifiedTime(Path, LinkOption...) setLastModifiedTime(Path, FileTime)	Returns or sets the specified file's last modified time.
+getOwner(Path, LinkOption...) setOwner(Path, UserPrincipal)	Returns or sets the owner of the file.
+getPosixFilePermissions(Path, LinkOption...) setPosixFilePermissions(Path, Set)	Returns or sets a file's POSIX file permissions.
+getAttribute(Path, String, LinkOption...) setAttribute(Path, String, Object, LinkOption...)	Returns or sets the value of a file attribute.
+If a program needs multiple file attributes around the same time, it can be inefficient to use methods that retrieve a single attribute. Repeatedly accessing the file system to retrieve a single attribute can adversely affect performance. For this reason, the Files class provides two readAttributes methods to fetch a file's attributes in one bulk operation.
+
+Methods	Comment
+readAttributes(Path, String, LinkOption...)	Reads a file's attributes as a bulk operation. The String parameter identifies the attributes to be read.
+readAttributes(Path, Class, LinkOption...)	Reads a file's attributes as a bulk operation. The Class parameter is the type of attributes requested and the method returns an object of that class.
+
+
+
+Process and java threads
+A thread is a lightweight sub-process, the smallest unit of processing. Multiprocessing and multithreading, both are used to achieve multitasking. So, threads are light-weight processes within a process.
+
+Thread Lifecycle
+The life cycle of the thread in java is controlled by JVM. The java thread states are as follows:
+
+New: The thread is in new state if you create an instance of Thread class but before the invocation of start() method.
+Runnable: After a newly born thread is started, the thread becomes runnable. A thread in this state is executing its task.
+Running: The thread is in running state if the thread scheduler has picked it.
+Blocked/Non-Runnable: A java thread can be blocked when waiting for a resource.
+Terminated : A thread is in terminated or dead state when its run() method exits.
+
+The synchronized keyword may be used to synchronize access to an object among the threads using the object
+o The synchronized keyword guards critical sections of code
+ Either methods or arbitrary sections of code may be synchronized.
+ All synchronized sections of code in an object are locked when a thread executes any one synchronized code section
+o No other threads can enter a synchronized section of code while it is locked.
+o Threads may still access other non-synchronized methods
+If the synchronized method is static, a lock is obtained at the class level instead of the object level.
+o Only one thread at a time may use such a method.
+
+
+Synchronization Issues
+
+Use synchronization sparingly
+o Can slow performance by reducing concurrency.
+o Can sometimes lead to fatal conditions such as deadlock.
+Other techniques should be used with synchronization to assure optimal performance and to assist threads in coordinating their activities.
+o For example,
+notifyAll() and
+wait()
+
+
+
+Collections are objects that group multiple elements and store, retrieve, and manipulate those elements. The Collection interface is at the root of the collection hierarchy. Subinterfaces of Collection include List, Queue, and Set.
+
+What are Generics?
+Generics allow types to be parameters for methods, classes, and interfaces.
+Syntax
+
+BaseType <Type> obj = new BaseType <Type>()
+
+In parameter types, we cannot use primitives like 'int', 'char', or 'double'.
+
+Vector
+Vector implements the List Interface. Like ArrayList, it also maintains the insertion order, but it is rarely used in a non-thread environment as it is synchronized, which leads to poor performance in searching, adding, deleting, and updating its elements.
+
+
+Stack
+Java provides a Stack class which models the Stack data structure. A Stack is a Last In First Out (LIFO) data structure. It supports two basic operations called push and pop. The Stack class extends Vector which implements the List interface. A Vector is a resizable collection. It grows its size to accommodate new elements and shrinks the size when the elements are removed. Since the Stack class extends Vector, it also grows and shrinks its size as needed when new elements are added or removed.
+
+Iterable and Iterator
+Iterators are used in the Collection framework in Java to retrieve elements one by one.
+
+To implement an iterable data structure, we need to:
+Implement the Iterable interface along with its methods in the said Data Structure
+Create an Iterator class that implements the Iterator interface and corresponding methods.
+The “Iterable” was introduced to be able to use it in the “foreach” loop. A class implementing the Iterable interface can be iterated over.
+
+Iterators
+Iterator is a class that manages iteration over an Iterable. It maintains a state of where we are in the current iteration and knows what the next element is and how to get it. In Java 8, when you call the double “::” notation as shown below, you get an Iterable from the Stream.
+
+The java.util.Collections class consists exclusively of static methods that operate on or return collections. Following are the important points about Collections:
+
+It contains polymorphic algorithms that operate on collections, "wrappers", which return a new collection backed by a specified collection.
+The methods of this class all throw a NullPointerException if the collections or class objects provided to them are null.
+Some useful methods in the Collections class: Method
+
+Method Signature	Description
+Collections.sort(List myList)	Sorts the myList (implementation of any List interface) provided as an argument in natural ordering.
+Collections.sort(List, comparator c)	Sorts the myList (implementation of any List interface) according to the ordering defined by comparator c. (c class should implement the comparator interface)
+Collections.shuffle(List myList)	Randomizes the order of the elements in myList (an implementation of any List interface).
+Collections.reverse(List myList)	Reverses the order of the elements in myList (an implementation of any List interface).
+Collections.binarySearch(List mlist, T key)	Searches the mlist (implementation of any List interface) for the specified object using the binary search algorithm.
+Collections.copy(List dest, List src)	Copies the source List into the dest List.
+Collections.frequency(Collection c, Object o)	Returns the number of elements in the specified collection class c (which implements the Collection interface it can be List, Set, or Queue) equal to the specified object.
+Collections.synchronizedCollection(Collection c)	Returns a synchronized (thread-safe) collection backed by the specified collection.
+
+
+The Arrays class in the java.util package is a part of the Java Collection Framework. This class provides static methods to dynamically create and access Java arrays. It consists only of static methods and the methods of the Object class. The methods of this class can be used by the class name itself.
+
+The Set interface and common implementations.
+
+Following are the features of the set interface:
+
+Set is an interface which extends Collection. It is an unordered collection of objects in which duplicate values cannot be stored.
+Basically, Set is implemented by HashSet, LinkedHashSet or TreeSet (sorted representation).
+Set has various methods to add, remove, clear, size, etc. to enhance the usage of this interface.
+
+
+
+The Queue interface and common implementations
+The Queue interface is available in the java.util package and extends the Collection interface. The queue collection is used to hold the elements about to be processed and provides various operations like insertion, removal, etc. It is an ordered list of objects.
+
+Few important characteristics of Queue are:
+
+The Queue is used to insert elements at the end of the queue and removes from the beginning of the queue. It follows the FIFO concept.
+The Java Queue supports all methods of the Collection interface including insertion, deletion, etc.
+LinkedList, ArrayBlockingQueue, and PriorityQueue are the most frequently used implementations.
+If any null operation is performed on BlockingQueues, a NullPointerException is thrown.
+BlockingQueues have thread-safe implementations.
+The Queues which are available in the java.util package are Unbounded Queues.
+The Queues which are available in the java.util.concurrent package are the Bounded Queues.
+All Queues except the Deques support insertion and removal at the tail and head of the queue respectively. The Deques support element insertion and removal at both ends.
+
+
+Queue	Description
+LinkedBlockingQueue	an optionally bounded FIFO blocking queue backed by linked nodes
+ArrayBlockingQueue	a bounded FIFO blocking queue backed by an array
+PriorityBlockingQueue	an unbounded blocking priority queue backed by a heap
+SynchronousQueue	a simple rendezvous mechanism that uses the BlockingQueue interface.
+DelayQueue	a time-based scheduling queue backed by a heap
+
+
+The Java Hashtable class implements a hashtable, which maps keys to values. It inherits from the Dictionary class and implements the Map interface.
+
+A Hashtable is an array of lists. Each list is known as a bucket. The position of the bucket is identified by calling the hashcode() method. A Hashtable contains values based on the key.
+The Java Hashtable class contains unique elements.
+The Java Hashtable class doesn't allow null keys or values.
+The JavaHashtable class is synchronized.
+The initial default capacity of the Hashtable class is 11, whereas the loadFactor is 0.75.
+
+What is a lambda expression?
+Lambda expressions provide a different way to represent methods using an expression. It saves a lot of code. In the case of a lambda expression, we don't need to define the method again to provide the implementation. Here, we simply write the implementation code.
+
+JDBC API is a Java API that can access any kind of tabular data, especially data stored in a Relational Database. JDBC works with Java on a variety of platforms, such as Windows, Mac OS, and the various versions of UNIX.
+
+JDBC helps you to write Java applications that manage these three programming activities:
+1. Connect to a data source, like a database
+2. Send queries and update statements to the database
+3. Retrieve and process the results received from the database in answer to your query.
+
+Types of driver
+JDBC drivers are client-side adapters (installed on the client machine, not on the server) that convert requests from Java programs to a protocol that the DBMS can understand. There are 4 types of JDBC drivers:
+1. Type-1 driver or JDBC-ODBC bridge driver
+2. Type-2 driver or Native-API driver
+3. Type-3 driver or Network Protocol driver
+4. Type-4 driver or Thin driver
+
+
+Interface	Description
+Statement	Use this for general-purpose access to your database. Useful when you are using static SQL statements at runtime. The Statement interface cannot accept parameters.
+PreparedStatement	Use this when you plan to use the SQL statements many times. The PreparedStatement interface accepts input parameters at runtime.
+CallableStatement	Use this when you want to access the database stored procedures. The CallableStatement interface can also accept runtime input parameters.
+
+
+
+
+

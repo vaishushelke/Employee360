@@ -1,0 +1,23 @@
+# Eclipse
+.metadata/
+.settings/
+.classpath
+.project
+
+# Spring Boot
+target/
+
+# React
+node_modules/
+dist/
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.idea/
+*.iml
+
+# Logs
+*.log

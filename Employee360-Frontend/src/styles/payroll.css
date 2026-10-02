@@ -1,0 +1,325 @@
+
+/* =========================================
+   PAYROLL PAGE
+========================================= */
+
+.container-fluid {
+    background: #f5f7fb;
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.container-fluid h2 {
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 6px;
+}
+
+.container-fluid .text-muted {
+    color: #6b7280 !important;
+}
+
+
+/* =========================================
+   PAYROLL COUNT BADGE
+========================================= */
+
+.container-fluid .badge.bg-dark {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.alert {
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.card.shadow-sm {
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06) !important;
+}
+
+.card-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 18px 22px;
+}
+
+.card-header h5 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.card-body {
+    padding: 22px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+.form-control {
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #1f2937;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #111827;
+    box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.08);
+}
+
+.form-control::placeholder {
+    color: #9ca3af;
+}
+
+
+/* =========================================
+   NET SALARY
+========================================= */
+
+input[name="netSalary"] {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: #111827;
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.btn-dark {
+    padding: 10px 18px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-secondary {
+    padding: 10px 18px;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+.btn-outline-dark,
+.btn-outline-danger {
+    border-radius: 6px;
+}
+
+
+/* =========================================
+   PAYROLL LIST HEADER
+========================================= */
+
+.card-header .form-control {
+    max-width: 280px;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    margin-bottom: 0;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.table th {
+    font-weight: 600;
+    padding: 13px 12px;
+    vertical-align: middle;
+}
+
+.table td {
+    padding: 12px;
+    vertical-align: middle;
+    color: #374151;
+}
+
+.table-dark th {
+    background: #212529 !important;
+    color: #ffffff;
+    border-color: #343a40;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+
+/* =========================================
+   SALARY VALUES
+========================================= */
+
+.table td strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.table .btn-sm {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table .btn-outline-dark:hover {
+    background: #212529;
+    color: #ffffff;
+}
+
+.table .btn-outline-danger:hover {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+
+/* =========================================
+   EMPTY TABLE
+========================================= */
+
+.table tbody .text-center {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 992px) {
+
+    .container-fluid {
+        padding: 20px !important;
+    }
+
+    .card-body {
+        padding: 18px;
+    }
+
+    .card-header {
+        padding: 16px 18px;
+    }
+
+    .card-header .d-flex {
+        gap: 15px;
+    }
+
+    .card-header .form-control {
+        max-width: 240px !important;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .container-fluid {
+        padding: 15px !important;
+    }
+
+    .container-fluid > .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 15px;
+    }
+
+    .container-fluid .badge.bg-dark {
+        align-self: flex-start;
+    }
+
+    .card-header .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    .card-header .form-control {
+        width: 100%;
+        max-width: 100% !important;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .container-fluid {
+        padding: 12px !important;
+    }
+
+    .container-fluid h2 {
+        font-size: 22px;
+    }
+
+    .card-header h5 {
+        font-size: 16px;
+    }
+
+    .form-control {
+        font-size: 13px;
+    }
+
+    .btn-dark,
+    .btn-secondary {
+        font-size: 13px;
+        padding: 9px 14px;
+    }
+
+    .table {
+        font-size: 13px;
+    }
+}
+
