@@ -33,7 +33,7 @@ public class DepartmentController {
 		return ResponseEntity.status(HttpStatus.OK).body("create department "+department); 
 	}
 	
-	@GetMapping("/getalld")
+	@GetMapping({"/getAll", "/getalld"})
 	public List<Department> getAllDepartment(){
 		List<Department> d =  dser.getAllDepartment();
 		 return d;

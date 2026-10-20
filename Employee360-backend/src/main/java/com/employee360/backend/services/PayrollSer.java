@@ -1,3 +1,4 @@
+
 package com.employee360.backend.services;
 
 import java.util.List;
@@ -14,79 +15,55 @@ public class PayrollSer {
     @Autowired
     private PayrollRepo payrollRepo;
 
-    // Save Payroll
+    // CREATE
     public Payroll savePayroll(Payroll payroll) {
-
         return payrollRepo.save(payroll);
     }
 
-    // Get All Payroll
+    // READ ALL
     public List<Payroll> getAllPayroll() {
-
         return payrollRepo.findAll();
     }
 
-    // Get Payroll By ID
+    // READ BY ID
     public Payroll getPayrollById(Long id) {
-
         return payrollRepo.findById(id).orElse(null);
     }
 
-    // Update Payroll
+    // UPDATE
     public Payroll updatePayroll(Payroll payroll, Long id) {
 
-        Payroll existingPayroll =
+        Payroll existing =
                 payrollRepo.findById(id).orElse(null);
 
-        if (existingPayroll != null) {
+        if (existing != null) {
+            existing.setEmployeeId(payroll.getEmployeeId());
+            existing.setPayMonth(payroll.getPayMonth());
+            existing.setBasicSalary(payroll.getBasicSalary());
+            existing.setHra(payroll.getHra());
+            existing.setAllowance(payroll.getAllowance());
+            existing.setPf(payroll.getPf());
+            existing.setTax(payroll.getTax());
+            existing.setDeduction(payroll.getDeduction());
+            existing.setNetSalary(payroll.getNetSalary());
 
-            existingPayroll.setEmployeeId(
-                    payroll.getEmployeeId());
-
-            existingPayroll.setPayMonth(
-                    payroll.getPayMonth());
-
-            existingPayroll.setBasicSalary(
-                    payroll.getBasicSalary());
-
-            existingPayroll.setHra(
-                    payroll.getHra());
-
-            existingPayroll.setAllowance(
-                    payroll.getAllowance());
-
-            existingPayroll.setPf(
-                    payroll.getPf());
-
-            existingPayroll.setTax(
-                    payroll.getTax());
-
-            existingPayroll.setDeduction(
-                    payroll.getDeduction());
-
-            existingPayroll.setNetSalary(
-                    payroll.getNetSalary());
-
-            return payrollRepo.save(existingPayroll);
+            return payrollRepo.save(existing);
         }
 
         return null;
     }
 
-    // Delete Payroll
+    // DELETE
     public boolean deletePayroll(Long id) {
 
         Payroll payroll =
                 payrollRepo.findById(id).orElse(null);
 
         if (payroll != null) {
-
             payrollRepo.delete(payroll);
-
             return true;
         }
 
         return false;
     }
-
 }

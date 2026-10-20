@@ -1,15 +1,16 @@
 package com.employee360.backend.entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.employee360.backend.enums.LeaveStatus;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -28,6 +29,14 @@ public class Leave {
 	private String reason;
 	
 	private LeaveStatus status;
+
+	@Column(length = 100)
+	private String reviewedBy;
+
+	private LocalDateTime reviewedAt;
+
+	@Column(length = 1000)
+	private String reviewComment;
 	
 	@ManyToOne
 	@JoinColumn(name = "employee_id")
@@ -98,6 +107,30 @@ public class Leave {
 		this.status = status;
 	}
 
+	public String getReviewedBy() {
+		return reviewedBy;
+	}
+
+	public void setReviewedBy(String reviewedBy) {
+		this.reviewedBy = reviewedBy;
+	}
+
+	public LocalDateTime getReviewedAt() {
+		return reviewedAt;
+	}
+
+	public void setReviewedAt(LocalDateTime reviewedAt) {
+		this.reviewedAt = reviewedAt;
+	}
+
+	public String getReviewComment() {
+		return reviewComment;
+	}
+
+	public void setReviewComment(String reviewComment) {
+		this.reviewComment = reviewComment;
+	}
+
 	public Employee getEmployee() {
 		return employee;
 	}
@@ -109,7 +142,8 @@ public class Leave {
 	@Override
 	public String toString() {
 		return "Leave [id=" + id + ", leaveType=" + leaveType + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", reason=" + reason + ", status=" + status + ", employee=" + employee + "]";
+				+ ", reason=" + reason + ", status=" + status + ", reviewedBy=" + reviewedBy + ", reviewedAt="
+				+ reviewedAt + "]";
 	}
 
 	

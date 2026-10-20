@@ -7,18 +7,26 @@ import com.employee360.backend.enums.AttendanceStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "attendance")
 public class Attendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long employeeId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "employee_id", foreignKey = @ForeignKey(name = "fk_attendance_employee"))
+	private Employee employee;
 
     private LocalDate attendanceDate;
 
@@ -34,11 +42,11 @@ public class Attendance {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Attendance(Long id, Long employeeId, LocalDate attendanceDate, AttendanceStatus status, String checkInTime,
+	public Attendance(Long id, Employee employee, LocalDate attendanceDate, AttendanceStatus status, String checkInTime,
 			String checkOutTime) {
 		super();
 		this.id = id;
-		this.employeeId = employeeId;
+		this.employee = employee;
 		this.attendanceDate = attendanceDate;
 		this.status = status;
 		this.checkInTime = checkInTime;
@@ -53,12 +61,12 @@ public class Attendance {
 		this.id = id;
 	}
 
-	public Long getEmployeeId() {
-		return employeeId;
+	public Employee getEmployee() {
+		return employee;
 	}
 
-	public void setEmployeeId(Long employeeId) {
-		this.employeeId = employeeId;
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
 	public LocalDate getAttendanceDate() {
@@ -95,7 +103,7 @@ public class Attendance {
 
 	@Override
 	public String toString() {
-		return "Attendance [id=" + id + ", employeeId=" + employeeId + ", attendanceDate=" + attendanceDate
+		return "Attendance [id=" + id + ", employee=" + (employee == null ? null : employee.getId()) + ", attendanceDate=" + attendanceDate
 				+ ", status=" + status + ", checkInTime=" + checkInTime + ", checkOutTime=" + checkOutTime + "]";
 	}
 

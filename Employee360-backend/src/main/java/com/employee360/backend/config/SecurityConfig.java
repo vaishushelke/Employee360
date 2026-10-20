@@ -1,20 +1,26 @@
+
 package com.employee360.backend.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -24,7 +30,11 @@ import com.employee360.backend.security.CustomUserDetailsService;
 import com.employee360.backend.security.JwtAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
+
+    @Value("${cors.allowed-origins:http://localhost:5173}")
+    private String allowedOrigins;
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -32,18 +42,10 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // =========================================================
-    // PASSWORD ENCODER
-    // =========================================================
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    // =========================================================
-    // AUTHENTICATION PROVIDER
-    // =========================================================
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -57,10 +59,6 @@ public class SecurityConfig {
         return provider;
     }
 
-    // =========================================================
-    // AUTHENTICATION MANAGER
-    // =========================================================
-
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration)
@@ -69,10 +67,7 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-    // =========================================================
-    // CORS
-    // =========================================================
-
+    // CORS CONFIGURATION
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -80,292 +75,224 @@ public class SecurityConfig {
                 new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                Arrays.asList(
-                        "http://localhost:5173"
-                )
-        );
+                Arrays.asList(allowedOrigins.split(",")));
 
         configuration.setAllowedMethods(
                 Arrays.asList(
                         "GET",
                         "POST",
                         "PUT",
+                        "PATCH",
                         "DELETE",
-                        "OPTIONS"
-                )
-        );
+                        "OPTIONS"));
 
         configuration.setAllowedHeaders(
-                Arrays.asList("*")
-        );
+                Arrays.asList("*"));
 
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration(
-                "/**",
-                configuration
-        );
+        source.registerCorsConfiguration("/**", configuration);
 
         return source;
     }
 
-    // =========================================================
     // SECURITY FILTER CHAIN
-    // =========================================================
-
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http)
-            throws Exception {
+            HttpSecurity http) throws Exception {
 
         http
-
-            // -------------------------------------------------
-            // CORS
-            // -------------------------------------------------
             .cors(cors ->
                     cors.configurationSource(
-                            corsConfigurationSource()
-                    )
-            )
+                            corsConfigurationSource()))
 
-            // -------------------------------------------------
-            // CSRF
-            // -------------------------------------------------
-            .csrf(csrf ->
-                    csrf.disable()
-            )
+            .csrf(csrf -> csrf.disable())
 
-            // -------------------------------------------------
-            // SESSION
-            // JWT = STATELESS
-            // -------------------------------------------------
             .sessionManagement(session ->
                     session.sessionCreationPolicy(
-                            SessionCreationPolicy.STATELESS
-                    )
-            )
+                            SessionCreationPolicy.STATELESS))
 
-            // -------------------------------------------------
-            // AUTHENTICATION PROVIDER
-            // -------------------------------------------------
-            .authenticationProvider(
-                    authenticationProvider()
-            )
+            .authenticationProvider(authenticationProvider())
 
-            // -------------------------------------------------
-            // AUTHORIZATION
-            // -------------------------------------------------
+            .exceptionHandling(exceptions ->
+                    exceptions.authenticationEntryPoint(
+                            new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+
             .authorizeHttpRequests(auth -> {
 
-                // =================================================
-                // AUTHENTICATION
-                // =================================================
+                // AUTHENTICATION AND OTP
+                auth.requestMatchers("/auth/**").permitAll();
 
+                // CORS PREFLIGHT
                 auth.requestMatchers(
-                        "/auth/**"
-                ).permitAll();
+                        HttpMethod.OPTIONS, "/**").permitAll();
 
-                // =================================================
-                // CORS OPTIONS
-                // =================================================
-
+                // EMPLOYEE MANAGEMENT
                 auth.requestMatchers(
-                        HttpMethod.OPTIONS,
-                        "/**"
-                ).permitAll();
+                        HttpMethod.GET, "/Employee/**")
+                    .hasAnyRole(
+                        "ADMIN", "CEO", "HR", "MANAGER");
 
-                // =================================================
-                // EMPLOYEE
-                // =================================================
+                auth.requestMatchers("/Employee/**")
+                    .hasAnyRole("ADMIN", "HR");
 
-                // ADMIN + HR + USER + EMPLOYEE
-                // can VIEW employee records
+                // EMPLOYEE V2
+                auth.requestMatchers(
+                        HttpMethod.GET, "/api/v2/employees/me")
+                    .authenticated();
 
                 auth.requestMatchers(
                         HttpMethod.GET,
-                        "/Employee/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR",
-                        "EMPLOYEE",
-                        "USER"
-                );
-
-                // Only ADMIN + HR
-                // can CREATE / UPDATE / DELETE employees
+                        "/api/v2/employees",
+                        "/api/v2/employees/**")
+                    .hasAnyRole(
+                        "ADMIN", "CEO", "HR", "MANAGER");
 
                 auth.requestMatchers(
-                        "/Employee/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR"
-                );
-
-                // =================================================
-                // DEPARTMENT
-                // =================================================
-
-                // Everyone can VIEW departments
+                        HttpMethod.POST,
+                        "/api/v2/employees",
+                        "/api/v2/employees/**")
+                    .hasAnyRole("ADMIN", "HR");
 
                 auth.requestMatchers(
-                        HttpMethod.GET,
-                        "/Department/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR",
-                        "EMPLOYEE",
-                        "USER"
-                );
-
-                // Only ADMIN + HR
-                // can CREATE / UPDATE / DELETE departments
+                        HttpMethod.PUT,
+                        "/api/v2/employees/**")
+                    .hasAnyRole("ADMIN", "HR");
 
                 auth.requestMatchers(
-                        "/Department/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR"
-                );
+                        HttpMethod.DELETE,
+                        "/api/v2/employees/**")
+                    .hasAnyRole("ADMIN", "HR");
 
-                // =================================================
+                // DEPARTMENTS
+                auth.requestMatchers(
+                        HttpMethod.GET, "/Department/**")
+                    .hasAnyRole(
+                        "ADMIN", "CEO", "HR", "MANAGER");
+
+                auth.requestMatchers("/Department/**")
+                    .hasAnyRole("ADMIN", "HR");
+
                 // LEAVE
-                // =================================================
-
-                // USER / EMPLOYEE can APPLY for leave
-                // HR + ADMIN can also apply if needed
+                auth.requestMatchers(
+                        HttpMethod.GET, "/Leave/my", "/Leave/history/**")
+                    .authenticated();
 
                 auth.requestMatchers(
-                        "/Leave/apply/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR",
-                        "EMPLOYEE",
-                        "USER"
-                );
-
-                // Everyone can VIEW leaves
+                        HttpMethod.POST, "/Leave/my")
+                    .authenticated();
 
                 auth.requestMatchers(
                         HttpMethod.GET,
-                        "/Leave/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR",
-                        "EMPLOYEE",
-                        "USER"
-                );
-
-                // Only ADMIN + HR
-                // can APPROVE leave
+                        "/Leave/getAll",
+                        "/Leave/getById/**")
+                    .hasAnyRole("ADMIN", "CEO", "HR", "MANAGER");
 
                 auth.requestMatchers(
-                        "/Leave/approve/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR"
-                );
-
-                // Only ADMIN + HR
-                // can REJECT leave
+                        HttpMethod.POST, "/Leave/apply/**")
+                    .hasAnyRole("ADMIN", "HR");
 
                 auth.requestMatchers(
-                        "/Leave/reject/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR"
-                );
-
-                // Only ADMIN + HR
-                // can UPDATE leave
+                        HttpMethod.PUT, "/Leave/approve/**", "/Leave/reject/**")
+                    .hasAnyRole("ADMIN", "HR", "MANAGER");
 
                 auth.requestMatchers(
-                        "/Leave/update/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR"
-                );
-
-                // Only ADMIN + HR
-                // can DELETE leave
+                        HttpMethod.PUT, "/Leave/update/**")
+                    .hasAnyRole("ADMIN", "HR");
 
                 auth.requestMatchers(
-                        "/Leave/delete/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR"
-                );
+                        HttpMethod.DELETE, "/Leave/delete/**")
+                    .hasAnyRole("ADMIN", "HR");
 
-                // =================================================
+                auth.requestMatchers("/Leave/**").authenticated();
+
                 // ATTENDANCE
-                // =================================================
-
-                // Everyone can VIEW attendance
+                auth.requestMatchers(
+                        HttpMethod.GET, "/Attendance/my")
+                    .authenticated();
 
                 auth.requestMatchers(
-                        HttpMethod.GET,
-                        "/Attendance/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR",
-                        "EMPLOYEE",
-                        "USER"
-                );
+                        HttpMethod.GET, "/Attendance/**")
+                    .hasAnyRole(
+                        "ADMIN", "CEO", "HR", "MANAGER");
 
-                // Only ADMIN + HR
-                // can CREATE / UPDATE / DELETE attendance
+                auth.requestMatchers("/Attendance/**")
+                    .hasAnyRole("ADMIN", "HR", "MANAGER");
 
-                auth.requestMatchers(
-                        "/Attendance/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR"
-                );
-
-                // =================================================
                 // PAYROLL
-                // =================================================
+                auth.requestMatchers(
+                        HttpMethod.GET, "/Payroll/**")
+                    .hasAnyRole(
+                        "ADMIN", "CEO", "HR", "MANAGER");
 
-                // Everyone can VIEW payroll records
+                auth.requestMatchers("/Payroll/**")
+                    .hasAnyRole("ADMIN", "HR");
 
+                // NOTIFICATIONS
+                // Employee ownership is enforced in the service.
+                auth.requestMatchers("/api/notifications/**")
+                    .authenticated();
+
+                // DOCUMENTS
+                // Employee ownership is enforced in the service.
+                auth.requestMatchers("/api/documents/**")
+                    .authenticated();
+
+                // QUIZZES
+                // Fine-grained role checks are applied in the controller.
+                auth.requestMatchers("/api/quizzes/**")
+                    .authenticated();
+
+                // SALARY PAYMENTS
+                // Fine-grained role checks use @PreAuthorize.
+                auth.requestMatchers("/api/salary-payments/**")
+                    .authenticated();
+
+                // REIMBURSEMENTS
+                // Fine-grained role checks use @PreAuthorize.
+                auth.requestMatchers("/api/reimbursements/**")
+                    .authenticated();
+
+                // TASKS
                 auth.requestMatchers(
                         HttpMethod.GET,
-                        "/Payroll/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR",
-                        "EMPLOYEE",
-                        "USER"
-                );
-
-                // Only ADMIN + HR
-                // can CREATE / UPDATE / DELETE payroll
+                        "/api/tasks", "/api/tasks/**")
+                    .authenticated();
 
                 auth.requestMatchers(
-                        "/Payroll/**"
-                ).hasAnyRole(
-                        "ADMIN",
-                        "HR"
-                );
+                        HttpMethod.POST, "/api/tasks")
+                    .hasAnyRole("ADMIN", "HR", "MANAGER");
 
-                // =================================================
-                // EVERYTHING ELSE
-                // =================================================
+                auth.requestMatchers(
+                        HttpMethod.PUT, "/api/tasks/**")
+                    .authenticated();
 
+                auth.requestMatchers(
+                        HttpMethod.DELETE, "/api/tasks/**")
+                    .hasAnyRole("ADMIN", "HR");
+
+                // LEAVE CANCEL (employee cancels own pending leave)
+                auth.requestMatchers(
+                        HttpMethod.DELETE, "/Leave/cancel/**")
+                    .authenticated();
+
+                // DASHBOARD AND REPORTS
+                auth.requestMatchers("/api/dashboard/**")
+                    .authenticated();
+
+                auth.requestMatchers("/api/reports/**")
+                    .hasAnyRole("ADMIN", "CEO", "HR", "MANAGER");
+
+                // ALL OTHER ENDPOINTS
                 auth.anyRequest().authenticated();
             })
 
-            // =================================================
-            // JWT FILTER
-            // =================================================
-
             .addFilterBefore(
                     jwtAuthenticationFilter,
-                    UsernamePasswordAuthenticationFilter.class
-            );
+                    UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

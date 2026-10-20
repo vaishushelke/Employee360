@@ -1,12 +1,16 @@
+
 package com.employee360.backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import com.employee360.backend.entities.Attendance;
+import com.employee360.backend.dto.request.AttendanceRequest;
+import com.employee360.backend.dto.response.AttendanceResponse;
 import com.employee360.backend.services.AttendanceSer;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/Attendance")
@@ -16,69 +20,53 @@ public class AttendanceController {
     @Autowired
     private AttendanceSer attendanceSer;
 
-
-    // Save Attendance
+    // CREATE
     @PostMapping("/save")
-    public ResponseEntity<?> saveAttendance(
-            @RequestBody Attendance attendance) {
+        public ResponseEntity<AttendanceResponse> saveAttendance(
+                        @Valid @RequestBody AttendanceRequest attendance) {
 
-        Attendance savedAttendance =
-                attendanceSer.saveAttendance(attendance);
+                AttendanceResponse savedAttendance = attendanceSer.saveAttendance(attendance);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(savedAttendance);
     }
 
-
-    // Get All Attendance
+    // GET ALL
     @GetMapping("/getAll")
-    public ResponseEntity<?> getAllAttendance() {
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(attendanceSer.getAllAttendance());
+        public ResponseEntity<java.util.List<AttendanceResponse>> getAllAttendance() {
+                return ResponseEntity.ok(attendanceSer.getAllAttendance());
     }
 
+        @GetMapping("/my")
+        public ResponseEntity<java.util.List<AttendanceResponse>> getMyAttendance(Authentication authentication) {
+                return ResponseEntity.ok(attendanceSer.getMyAttendance(authentication.getName()));
+        }
 
-    // Get Attendance By ID
+    // GET BY ID
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getAttendanceById(
             @PathVariable Long id) {
 
-        Attendance attendance =
-                attendanceSer.getAttendanceById(id);
-
-        if (attendance != null) {
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(attendance);
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Attendance Not Found");
+        return attendanceSer.getAttendanceById(id)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Attendance not found"));
     }
 
-
-    // Update Attendance
+    // UPDATE
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateAttendance(
-            @RequestBody Attendance attendance,
+            @Valid @RequestBody AttendanceRequest attendance,
             @PathVariable Long id) {
 
-        Attendance updatedAttendance =
-                attendanceSer.updateAttendance(attendance, id);
-
-        if (updatedAttendance != null) {
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(updatedAttendance);
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Attendance Not Found");
+        return attendanceSer.updateAttendance(attendance, id)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Attendance not found"));
     }
 
-
-    // Delete Attendance
+    // DELETE
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAttendance(
             @PathVariable Long id) {
@@ -87,12 +75,12 @@ public class AttendanceController {
                 attendanceSer.deleteAttendance(id);
 
         if (deleted) {
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("Attendance Deleted Successfully");
+            return ResponseEntity.ok(
+                    "Attendance Deleted Successfully");
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body("Attendance Not Found");
     }
 }

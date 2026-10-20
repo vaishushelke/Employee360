@@ -1,6 +1,6 @@
+
 package com.employee360.backend.security;
 
-import java.security.Key;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -10,105 +10,63 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
 
-    // 58-byte secret = strong enough for HS384
     private static final String SECRET_KEY =
             "RW1wbG95ZWUzNjBKd3RTZWNyZXRLZXlGb3JTcHJpbmdCb290UHJvamVjdDIwMjZTZWN1cmVLZXkhIQ==";
 
+    private static final long TOKEN_EXPIRATION =
+            1000L * 60 * 60; // 1 hour
 
-    // ==========================================
-    // GENERATE TOKEN
-    // ==========================================
-
+    // GENERATE JWT TOKEN
     public String generateToken(UserDetails userDetails) {
 
+        Date now = new Date();
+
         return Jwts.builder()
-
                 .subject(userDetails.getUsername())
-
-                .issuedAt(new Date())
-
+                .issuedAt(now)
                 .expiration(
-                    new Date(
-                        System.currentTimeMillis()
-                        + 1000 * 60 * 60
-                    )
-                )
-
-                .signWith(
-                    getSignKey(),
-                    SignatureAlgorithm.HS384
-                )
-
+                        new Date(now.getTime() + TOKEN_EXPIRATION))
+                .signWith(getSignKey())
                 .compact();
     }
 
-
-    // ==========================================
     // EXTRACT USERNAME
-    // ==========================================
-
     public String extractUsername(String token) {
 
         return extractAllClaims(token).getSubject();
     }
 
-
-    // ==========================================
     // VALIDATE TOKEN
-    // ==========================================
-
     public boolean isTokenValid(
             String token,
             UserDetails userDetails) {
 
-        String username = extractUsername(token);
+        Claims claims = extractAllClaims(token);
 
-        return username.equals(userDetails.getUsername())
-                && !isTokenExpired(token);
+        return claims.getSubject() != null
+                && claims.getSubject().equals(
+                        userDetails.getUsername())
+                && claims.getExpiration() != null
+                && claims.getExpiration().after(new Date());
     }
 
-
-    // ==========================================
-    // CHECK TOKEN EXPIRATION
-    // ==========================================
-
-    private boolean isTokenExpired(String token) {
-
-        return extractAllClaims(token)
-                .getExpiration()
-                .before(new Date());
-    }
-
-
-    // ==========================================
-    // EXTRACT CLAIMS
-    // ==========================================
-
+    // EXTRACT ALL CLAIMS
     private Claims extractAllClaims(String token) {
 
         return Jwts.parser()
-
                 .verifyWith(getSignKey())
-
                 .build()
-
                 .parseSignedClaims(token)
-
                 .getPayload();
     }
 
-
-    // ==========================================
-    // SECRET KEY
-    // ==========================================
-
+    // GET SIGNING KEY
     private SecretKey getSignKey() {
 
         byte[] keyBytes =

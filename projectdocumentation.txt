@@ -131,3 +131,8 @@ View team
 View team attendance
 Review leave requests
 Approve/reject team leave
+
+
+
+
+as per images  i have the ui of employee360 and add in the register what actual role is the user and after that otp verify and then login with username and password , landing page is more actrative and  payment intergration also as well as add greeting like good morning , good afternoon , good evening as per time and also add in the dashborad  calender for user event or holidays  . from admin dshborad can swittch to user aslo and hr also like all dshborad can access from the admin dshborad only and more interavtive
